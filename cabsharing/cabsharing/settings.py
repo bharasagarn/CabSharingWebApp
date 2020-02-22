@@ -32,14 +32,16 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'django.contrib.admin',
+    'crispy_forms',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
+    'social_login.apps.SocialLoginConfig',
     # 'django.contrib.sites.models.Site',   # <--
-    'social_login',   # <--
+    # <--
     
     'allauth',   # <--
     'allauth.account',   # <--
@@ -127,6 +129,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+LOGIN_REDIRECT_URL='loginhome'
 AUTHENTICATION_BACKENDS = (
  'django.contrib.auth.backends.ModelBackend',
  'allauth.account.auth_backends.AuthenticationBackend',
