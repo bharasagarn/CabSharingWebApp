@@ -16,9 +16,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.views.generic import TemplateView
+from social_login import views as user_views
 
 urlpatterns = [
     path('',TemplateView.as_view(template_name="social_login/index.html")),
     path('admin/', admin.site.urls),
     path('accounts/',include('allauth.urls')),
+    path('register/', user_views.register,name='register'),
 ]

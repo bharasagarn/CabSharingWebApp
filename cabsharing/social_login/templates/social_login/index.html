@@ -10,6 +10,8 @@
  
   {% else %}
   <a href="{% provider_login_url 'google' %}">Login with Google</a>
+  <br>
+  <a href="{% url 'register' %}">Sign Up</a>
   {% endif %}
 
   </body>
