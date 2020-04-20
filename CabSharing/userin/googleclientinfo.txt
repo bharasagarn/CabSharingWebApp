@@ -1,0 +1,2 @@
+client-id : 522394649018-k87spmka6n5tpbrsr47d83vd0m6o3qlu.apps.googleusercontent.com
+client-sec: 6qVn5dcVZteLrvvfG_gsH2Hv
