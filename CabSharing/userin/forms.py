@@ -1,5 +1,5 @@
 from django import forms
-from userin.models import UserProfileInfo,LookingCab
+from userin.models import UserProfileInfo,LookingCab,BookedCab
 from django.contrib.auth.models import User
 
 class UserForm(forms.ModelForm):
@@ -23,3 +23,13 @@ class LookingCabForm(forms.ModelForm):
         model = LookingCab
         fields = ('date',)
         # exclude = ['user','datetime',]
+
+class BookedCabForm(forms.ModelForm):
+    date = forms.DateField(
+        label='Date',
+        widget=forms.widgets.DateInput(attrs={'type':'date'})
+    )
+
+    class Meta():
+        model = BookedCab
+        fields = ('date','source','dest',)

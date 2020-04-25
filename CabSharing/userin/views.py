@@ -1,5 +1,6 @@
 from django.shortcuts import render
-from userin.forms import UserForm,UserProfileInfoForm,LookingCabForm
+from userin.forms import UserForm,UserProfileInfoForm,LookingCabForm,BookedCabForm
+from userin.models import BookedCab
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
@@ -7,7 +8,11 @@ from django.contrib.auth.decorators import login_required
 
 
 def index(request):
-    return render(request,'userin/index.html')
+    data = BookedCab.objects.all()
+    cabdata = {
+        "cabs": data
+    }
+    return render(request,'userin/index.html',cabdata)
 
 @login_required
 def special(request):
@@ -82,3 +87,23 @@ def look_cab(request):
         return render(request,'userin/lookingcab.html',
                           {'looking_cab_form':looking_cab_form,
                            'cabbed':cabbed})
+
+@login_required
+def booked_cab(request):
+    booked = False
+    if request.method == 'POST':
+        booked_cab_form = BookedCabForm(data=request.POST)
+        if booked_cab_form.is_valid():
+            user = request.user
+            book = booked_cab_form.save(commit=False)
+            book.save()
+            booked = True
+            return HttpResponseRedirect(reverse('index'))
+        else:
+            print(booked_cab_form.errors)
+            return HttpResponse("Error in form input")
+    else:
+        booked_cab_form = BookedCabForm()
+        return render(request,'userin/bookedcab.html',
+                          {'booked_cab_form':booked_cab_form,
+                           'booked':booked})

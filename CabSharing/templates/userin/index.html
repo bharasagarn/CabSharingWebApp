@@ -10,8 +10,25 @@
           <a href="{% url 'userin:looking_cab' %}">Looking for a cab?</a>
         </button>
         <button type="button" class="btn btn-light btn-lg btn-block">
-          <a href="">Looking for people to share your cab?</a>
+          <a href="{% url 'userin:booked_cab' %}">Looking for people to share your cab?</a>
         </button>
+        <br>
+        <br>
+        
+        <div class="container">
+          <div class="card-columns">
+            {% for cab in cabs %}
+            <div class="card bg-info">
+              <div class="card-body text-center">
+                <p class="card-text">{{ cab.date }}</p>
+                <p class="card-text">{{ cab.get_source_display }}</p>
+                <p class="card-text">{{ cab.get_dest_display }}</p>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+
     {% else %}
         <h2>Register or Login if you'd like to</h2>
     {% endif %}
