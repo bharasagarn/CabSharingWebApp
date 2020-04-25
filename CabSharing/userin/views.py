@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from userin.forms import UserForm,UserProfileInfoForm
+from userin.forms import UserForm,UserProfileInfoForm,LookingCabForm
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
@@ -61,3 +61,24 @@ def user_login(request):
             return HttpResponse("Invalid login credentials.")
     else:
         return render(request, 'userin/login.html', {})
+
+@login_required
+def look_cab(request):
+    cabbed = False
+    if request.method == 'POST':
+        looking_cab_form = LookingCabForm(data=request.POST)
+        if looking_cab_form.is_valid():
+            user = request.user
+            cab = looking_cab_form.save(commit=False)
+            cab.user = user
+            cab.save()
+            cabbed = True
+            return HttpResponseRedirect(reverse('index'))
+        else:
+            print(looking_cab_form.errors)
+            return HttpResponse("Error in form input")
+    else:
+        looking_cab_form = LookingCabForm()
+        return render(request,'userin/lookingcab.html',
+                          {'looking_cab_form':looking_cab_form,
+                           'cabbed':cabbed})

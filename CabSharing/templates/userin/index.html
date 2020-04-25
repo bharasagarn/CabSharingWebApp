@@ -5,6 +5,13 @@
     <h1>Welcome to CabSharing !</h1>
     {% if user.is_authenticated %}
         <h2>Hello {{ user.username }}</h2>
+        <br>
+        <button type="button" class="btn btn-light btn-lg btn-block">
+          <a href="{% url 'userin:looking_cab' %}">Looking for a cab?</a>
+        </button>
+        <button type="button" class="btn btn-light btn-lg btn-block">
+          <a href="">Looking for people to share your cab?</a>
+        </button>
     {% else %}
         <h2>Register or Login if you'd like to</h2>
     {% endif %}
