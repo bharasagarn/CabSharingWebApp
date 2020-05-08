@@ -25,4 +25,5 @@ urlpatterns = [
     path('userin/',include('userin.urls')),
     path('logout/',views.user_logout,name='logout'),
     path('accounts/',include('allauth.urls')),
+    path('chat/',include('chat.urls')),
 ]
