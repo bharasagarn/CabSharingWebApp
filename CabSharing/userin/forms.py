@@ -11,7 +11,7 @@ class UserForm(forms.ModelForm):
 class UserProfileInfoForm(forms.ModelForm):
     class Meta():
         model = UserProfileInfo
-        fields = ('profile_pic',)
+        fields = ('profile_pic','name','mobile')
 
 class LookingCabForm(forms.ModelForm):
     date = forms.DateField(
@@ -21,8 +21,7 @@ class LookingCabForm(forms.ModelForm):
 
     class Meta():
         model = LookingCab
-        fields = ('date',)
-        # exclude = ['user','datetime',]
+        fields = ('date','source','dest')
 
 class BookedCabForm(forms.ModelForm):
     date = forms.DateField(

@@ -1,18 +1,23 @@
 from django.shortcuts import render
 from userin.forms import UserForm,UserProfileInfoForm,LookingCabForm,BookedCabForm
-from userin.models import BookedCab
+from userin.models import BookedCab, UserProfileInfo
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect, HttpResponse
+from django.forms.models import model_to_dict
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 
 
 def index(request):
     data = BookedCab.objects.all()
-    cabdata = {
-        "cabs": data
+    userdata = 0
+    if request.user.is_authenticated:
+        userdata = UserProfileInfo.objects.get_or_create(user=request.user)
+    db = {
+        "cabs": data,
+        "userdata": userdata
     }
-    return render(request,'userin/index.html',cabdata)
+    return render(request,'userin/index.html',db)
 
 @login_required
 def special(request):
@@ -96,6 +101,7 @@ def booked_cab(request):
         if booked_cab_form.is_valid():
             user = request.user
             book = booked_cab_form.save(commit=False)
+            book.user = user
             book.save()
             booked = True
             return HttpResponseRedirect(reverse('index'))
@@ -107,3 +113,28 @@ def booked_cab(request):
         return render(request,'userin/bookedcab.html',
                           {'booked_cab_form':booked_cab_form,
                            'booked':booked})
+
+@login_required
+def edit_profile(request):
+    user = request.user
+    edited = False
+    profile = UserProfileInfo.objects.get(user=user)
+    if request.method=='POST':
+        editProfileForm = UserProfileInfoForm(data=request.POST)
+        if editProfileForm.is_valid():
+            edit = editProfileForm.save(commit=False)
+            if 'profile_pic' in request.FILES:
+                print('dp found')
+                edit.profile_pic = request.FILES['profile_pic']
+            UserProfileInfo.objects.filter(user=user).update(name=edit.name,mobile=edit.mobile,profile_pic=edit.profile_pic)
+            edited = True
+            return HttpResponseRedirect(reverse('index'))
+        else:
+            print(editProfileForm.errors)
+            return HttpResponse("Form input error")
+    else:
+        editProfileForm = UserProfileInfoForm(initial=model_to_dict(profile))
+        return render(request,'userin/editprofile.html',
+                            {'editProfileForm':editProfileForm,
+                            'edited':edited,
+                            'profile':profile})

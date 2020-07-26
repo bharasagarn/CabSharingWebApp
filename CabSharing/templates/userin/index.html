@@ -4,7 +4,7 @@
   <div class="jumbotron">
     <h1>Welcome to CabSharing !</h1>
     {% if user.is_authenticated %}
-        <h2>Hello {{ user.username }}</h2>
+        <h2>Hello {{ userdata.0.name }} </h2>
         <br>
         <button type="button" class="btn btn-light btn-lg btn-block">
           <a href="{% url 'userin:looking_cab' %}">Looking for a cab?</a>
