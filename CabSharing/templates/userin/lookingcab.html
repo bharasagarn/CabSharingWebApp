@@ -4,9 +4,9 @@
   <div class="container">
     <div class="jumbotron">
       {% if cabbed %}
-        <h1>Thanks! Cab registered.</h1>
+        <h1>Searching...</h1>
       {% else %}
-        <h3>Just fill out the form.</h3>
+        <h3>Search cabs</h3>
         <form enctype="multipart/form-data" method="POST">
           {% csrf_token %}
           {{ looking_cab_form.as_p }}

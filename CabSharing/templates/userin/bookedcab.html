@@ -6,7 +6,7 @@
       {% if booked %}
         <h1>Thanks! Cab registered.</h1>
       {% else %}
-        <h3>Just fill out the form.</h3>
+        <h3>Post your cab details :</h3>
         <form enctype="multipart/form-data" method="POST">
           {% csrf_token %}
           {{ booked_cab_form.as_p }}

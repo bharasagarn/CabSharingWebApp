@@ -1,0 +1,29 @@
+{% extends "userin/base.html" %}
+{% load static %}
+{% block body_block %}
+  <div class="container">
+    <div class="jumbotron">
+        {% if filled %}
+        <div class="container">
+            <div class="card-columns">
+                {% for cab in cabres %}
+                <div class="card bg-light">
+                <div class="card-body text-center">
+                    <p class="card-text">{{ cab.name }}</p>
+                    <p class="card-text">{{ cab.mobile }}</p>
+                    <p class="card-text">{{ cab.date }}</p>
+                    <p class="card-text">{{ cab.source }}</p>
+                    <p class="card-text">{{ cab.dest }}</p>
+                </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% else %}
+        <button type="button" class="btn btn-light btn-lg btn-block">
+            <a href="{% url 'userin:booked_cab' %}">No results. Post your own cab!</a>
+        </button>
+        {% endif %}
+    </div>
+  </div>
+{% endblock %}

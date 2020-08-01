@@ -6,10 +6,11 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.forms.models import model_to_dict
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
+import datetime
 
 
 def index(request):
-    data = BookedCab.objects.all()
+    data = BookedCab.objects.filter(date__gte=datetime.datetime.now()).order_by('-date')
     userdata = 0
     if request.user.is_authenticated:
         userdata = UserProfileInfo.objects.get_or_create(user=request.user)
@@ -81,9 +82,23 @@ def look_cab(request):
             user = request.user
             cab = looking_cab_form.save(commit=False)
             cab.user = user
-            cab.save()
-            cabbed = True
-            return HttpResponseRedirect(reverse('index'))
+            cabres = ""
+            cabres1 = []
+            if(BookedCab.objects.filter(date=cab.date).filter(source=cab.source).filter(dest=cab.dest).exists()):
+                cabres = BookedCab.objects.filter(date=cab.date).filter(source=cab.source).filter(dest=cab.dest)
+                cabbed = True
+            if(cabbed):
+                for c in cabres:
+                    cb = {}
+                    cb['name']=UserProfileInfo.objects.get(user=c.user).name
+                    cb['mobile']=UserProfileInfo.objects.get(user=c.user).mobile
+                    cb['date']=c.date
+                    cb['source']=c.get_source_display
+                    cb['dest']=c.get_dest_display
+                    cabres1.append(cb)
+            return render(request,'userin/search_results.html',
+                                {'cabres':cabres1,
+                                'filled':cabbed})
         else:
             print(looking_cab_form.errors)
             return HttpResponse("Error in form input")

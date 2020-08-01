@@ -9,7 +9,6 @@
         <form enctype="multipart/form-data" method="POST">
           {% csrf_token %}
           {{ editProfileForm.as_p }}
-          <img src='{{ profile.profile_pic }}'>
           <input type="submit" name="" value="Done">
         </form>
         
