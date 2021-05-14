@@ -7,7 +7,7 @@
 **How to run:**
 - Activate python virtual environment using:
 ```
-source CFCrawlerEnv/bin/activate
+source CabSharingEnv/bin/activate
 ```
 - Install all the dependencies using:
 ```
